@@ -1,7 +1,33 @@
 // index.js
 const fs = require("fs");
+const tasksFilePath = "./tasks.json";
 
 let tasks = [];
+
+const loadTasks = () => {
+  if (fs.existsSync(tasksFilePath)) {
+    const fileContent = fs.readFileSync(tasksFilePath, "utf-8");
+
+    try {
+      tasks = JSON.parse(fileContent);
+    } catch (error) {
+      console.error(
+        "Error reading tasks from file. Starting with an empty array."
+      );
+      tasks = [];
+    }
+  } else {
+    tasks = [];
+  }
+};
+
+const saveTasks = () => {
+  const tasksJson = JSON.stringify(tasks, null, 2);
+
+  fs.writeFileSync(tasksFilePath, tasksJson, "utf-8");
+
+  console.log("Tasks saved successfully");
+};
 
 const addTask = (task) => {
   if (task.length === 0) {
@@ -10,6 +36,7 @@ const addTask = (task) => {
   }
 
   tasks.push(task);
+  saveTasks();
   console.log(`Task added: ${task}`);
 };
 
@@ -26,6 +53,8 @@ const listTasks = (tasks) => {
 
 const inputCommand = process.argv[2];
 const inputTask = process.argv.slice(3).join(" ");
+
+loadTasks();
 
 if (inputCommand === "add") {
   addTask(inputTask);

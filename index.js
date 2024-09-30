@@ -51,8 +51,23 @@ const listTasks = (tasks) => {
   });
 };
 
+const removeTask = (taskNumber) => {
+  const index = taskNumber - 1;
+
+  if (index < 0 || index >= tasks.length) {
+    console.log("Invalid task number. Try again.");
+  }
+
+  const removedTask = tasks.splice(index, 1);
+
+  saveTasks();
+
+  console.log(`Task removed: ${removedTask[0]}`);
+};
+
 const inputCommand = process.argv[2];
 const inputTask = process.argv.slice(3).join(" ");
+const taskNumber = parseInt(process.argv[3], 10);
 
 loadTasks();
 
@@ -60,6 +75,8 @@ if (inputCommand === "add") {
   addTask(inputTask);
 } else if (inputCommand === "list") {
   listTasks(tasks);
+} else if (inputCommand === "remove") {
+  removeTask(taskNumber);
 } else {
-  console.log("Unknown command. Please use 'add' to add a task.");
+  console.log("Unknown command. Please use 'add', 'list', or 'remove'.");
 }

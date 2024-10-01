@@ -35,7 +35,12 @@ const addTask = (task) => {
     return;
   }
 
-  tasks.push(task);
+  const newTask = {
+    description: task,
+    completed: false,
+  };
+
+  tasks.push(newTask);
   saveTasks();
   console.log(`Task added: ${task}`);
 };
@@ -47,7 +52,8 @@ const listTasks = (tasks) => {
   }
 
   tasks.forEach((task, index) => {
-    console.log(`${index + 1}. ${task}`);
+    const status = task.completed ? `[✅]` : `[ ]`;
+    console.log(`${index + 1}. ${status} ${task.description}`);
   });
 };
 
@@ -65,6 +71,19 @@ const removeTask = (taskNumber) => {
   console.log(`Task removed: ${removedTask[0]}`);
 };
 
+const completeTask = (taskNumber) => {
+  const index = taskNumber - 1;
+
+  if (index < 0 || index >= tasks.length) {
+    console.log("Invalid task number. Please try again.");
+  }
+
+  tasks[index].completed = true;
+  saveTasks();
+
+  console.log(`Task marked as completed: ${tasks[index].description}`);
+};
+
 const inputCommand = process.argv[2];
 const inputTask = process.argv.slice(3).join(" ");
 const taskNumber = parseInt(process.argv[3], 10);
@@ -77,6 +96,8 @@ if (inputCommand === "add") {
   listTasks(tasks);
 } else if (inputCommand === "remove") {
   removeTask(taskNumber);
+} else if (inputCommand === "complete") {
+  completeTask(taskNumber);
 } else {
   console.log("Unknown command. Please use 'add', 'list', or 'remove'.");
 }

@@ -8,5 +8,9 @@
   },
   "keywords": [],
   "author": "Stuart",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "wallpaper": "^7.2.1"
+  }
 }
